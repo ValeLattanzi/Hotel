@@ -1,0 +1,2 @@
+12/11/2022,105,Desayuno,20/11/2022,2,1500,1564,PendienteCobro12/11/2022,102,Media Pension,20/12/2022,2,1500,44899289,PendienteCobro12/11/2022,101,Desayuno,20/12/2022,2,1500,44899289,PendienteCobro 
+12/11/2022,102,Media Pension,20/12/2022,2,1500,44899289,PendienteCobro 

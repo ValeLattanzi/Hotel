@@ -2,7 +2,7 @@ from tkinter import *
 
 # Se reciben por parametros los datos de la estadia
 # Funcion del boton registrar la estadia
-def registrarEstadia(ventana : Tk, archivo = open("Estadia.txt", "a", encoding = "utf-8")):
+def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañantes, precio, nroDocumento, nombreCliente, tipoDocumento, pais, mail, poseeVehiculo, patente, marca, archivo = open("RegistroEstadia.txt", "a", encoding = "utf-8")):
     # Datos Estadia
     # _fechaActual = ventana.entryFechaActual.get()
     # _habitacion = ventana.entryHabitacion.get()
@@ -12,9 +12,10 @@ def registrarEstadia(ventana : Tk, archivo = open("Estadia.txt", "a", encoding =
     # _precio = ventana.entryPrecio.get()
     # _numeroDocumentoCliente = ventana.entryNumeroDocumento.get()
     # La estadia guarda solo el dni para consultar por ese dato unico
-    registrarDatosEnArchivo(ventana.entryFechaActual.get() + "," + ventana.entryHabitacion.get() + "," + ventana.entryPension.get() + "," + ventana.entryFechaLimite.get() + "," + ventana.entryAcompañantes.get() + "," + ventana.entryPrecio.get() + "," + ventana.entryNumeroDocumento.get(), archivo)
+    registrarCliente(nroDocumento, nombreCliente, tipoDocumento, pais, mail, poseeVehiculo, patente, marca)
+    registrarDatosEnArchivo(fechaActual + "," + habitacion + "," + pension + "," + fechaLimite + "," + acompañantes + "," + precio + "," + nroDocumento + "," + "PendienteCobro \n", archivo)
 
-def registrarCliente(ventana : Tk, archivo = open("Cliente.txt", "a", encoding = "utf-8")):        
+def registrarCliente(nroDocumento, nombreCompleto, tipoDocumento, pais, mail, poseeVehiculo, patente, marca, archivo = open("Cliente.txt", "a", encoding = "utf-8")):        
     # Datos Cliente
     # _numeroDocumentoCliente = ventana.entryNumeroDocumento.get()
     # _nombreYApellido = ventana.entryNombreYApellido.get()
@@ -24,37 +25,38 @@ def registrarCliente(ventana : Tk, archivo = open("Cliente.txt", "a", encoding =
     # _poseeVechiculo = ventana.entryPoseeVehiculo.get()
     # El cliente conoce la patente de su vehiculo
     # _patente = ventana.entryPatente.get()
-    if ventana.entryPoseeVehiculo.get() == "SI":
-        registrarVehiculo(ventana)
-    registrarDatosEnArchivo(ventana.entryNumeroDocumento.get() + "," + ventana.entryNombreYApellido.get() + "," + ventana.entryTipoDocumento.get() + "," + ventana.entryPais.get() + "," + ventana.entryMail.get() + "," + ventana.entryPoseeVehiculo.get() + "," + ventana.entryPatente.get(), archivo)
+    if poseeVehiculo == "SI":
+        registrarVehiculo(patente, marca)
+    registrarDatosEnArchivo(nroDocumento + "," + nombreCompleto + "," + tipoDocumento + "," + pais + "," + mail + "," + poseeVehiculo + "," + patente + "\n", archivo)
 
-def registrarVehiculo(ventana : Tk, archivo = open("Vehiculo.txt", "a", encoding = "utf-8")):
+def registrarVehiculo(patente, marca, archivo = open("Vehiculo.txt", "a", encoding = "utf-8")):
     # Datos Vehiculo
     # _patente = ventana.entryPatente.get()
     # _marca = ventana.entryMarca.get()
-    registrarDatosEnArchivo((ventana.entryMarca.get() + "," + ventana.entryPatente.get()), archivo)
+    registrarDatosEnArchivo(patente + "," + marca + "\n", archivo)
 
 def registrarDatosEnArchivo(datos: str, archivo: str):
     archivo.write(datos)
+    archivo.close()
 
 def consultarTipoDocumento(archivo = open("TipoDocumento.txt", "r", encoding = "utf-8")):
-    para(archivo.readlines)
+    return para(archivo.readlines())
 
 def consultarMarcas(archivo = open("MarcasVehiculo.txt", "r", encoding = "utf-8")):
-    para(archivo.readlines)
+    return para(archivo.readlines())
 
 def consultarHabitaciones(archivo = open("Habitaciones.txt", "r", encoding = "utf-8")):
-    para(archivo.readlines)
+    return para(archivo.readlines())
 
 def consultarPensiones(archivo = open("Pension.txt", "r", encoding = "utf-8")):
-    para(archivo.readlines)
+    return para(archivo.readlines())
 
 # Funcion recursiva para obtener la lista de cada uno de los archivos de texto
 def para(lista: list, lineasCorregidas : list = [], indice : int = 0):
     # Quita el salto de linea de cada linea
-    lineasCorregidas.append(lista[indice][0:len(lista[indice])-2])
+    lineasCorregidas.append(str(lista[indice][0:len(lista[indice])-1]))
     # Al llegar al limite de lineas (cuando el indice es igual a la longitud de la lista), finaliza la funcion
-    if indice == len(lista):
-        return lineasCorregidas
+    if indice == len(lista) - 1:
+        return tuple(lineasCorregidas)
     indice += 1
-    para(lista, indice, lineasCorregidas)
+    para(lista, lineasCorregidas, indice)
