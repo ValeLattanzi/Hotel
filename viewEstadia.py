@@ -6,10 +6,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.ttk import *
 from Estadia import registrarEstadia
-from Estadia import consultarTipoDocumento
-from Estadia import consultarMarcas
-from Estadia import consultarHabitaciones
-from Estadia import consultarPensiones
+from Estadia import calcularPrecioEstadia
 # Crea la ventana
 ventana = Tk()
 ventana.geometry("600x400")
@@ -18,34 +15,48 @@ ventana.maxsize(width = 600,height=400)
 ventana.config(background="light blue")
 
 entryFechaActual = Entry(ventana)
-entryFechaActual.place(x = 20, y = 10)
+entryFechaActual.place(x = 20, y = 5)
 entryFechaActual.insert(0, datetime.now().strftime("%d/%m/%Y")) #Ingreso la fecha en el entry
 entryFechaActual.config(state = "disabled")
 
 # GroupBox Habitacion
-lblHabitacion = Label(ventana, text="Habitacion:", background="light blue").place(x = 20,y = 40)
-entryHabitacion = ttk.Combobox(ventana, values = consultarHabitaciones())
-entryHabitacion.place(x = 90, y =  40)
+frHabitacion = ttk.Labelframe(ventana, text="Habitacion")
+style = ttk.Style()
+style.configure(
+    "TLabelFrame",
+    foreground = "red",
+    padding = [5,5,5,5]
+)
+frHabitacion.config(width=585, height=80)
+frHabitacion.place(x=10, y=28)
+
+lblHabitacion = Label(frHabitacion, text="Habitacion:").place(x = 10,y = 0)
+entryHabitacion = ttk.Combobox(frHabitacion, state='readonly')
+entryHabitacion.place(x = 75, y =  0)
 entryHabitacion['values'] = ('101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310')
 
-lblPension = Label(ventana, text = "Pension:", background="light blue").place(x = 235 , y = 40 )
-entryPension = ttk.Combobox(ventana)
+lblPension = Label(frHabitacion, text = "Pension:").place(x = 220 , y = 0)
+entryPension = ttk.Combobox(frHabitacion, state='readonly')
 entryPension['values'] = ('Desayuno', 'Media Pension', 'Pension Completa')
-entryPension.place(x = 280,y = 40)
+entryPension.place(x = 270,y = 0)
 
-lblFechaLimite = Label(ventana, text = "Fecha Límite:", background="light blue").place(x = 20,y = 70)
-entryFechaLimite = Entry(ventana)
-entryFechaLimite.place(x = 100, y = 70)
+def pensionSeleccionada(event):
+    btnInsertarPrecio = Button(frHabitacion, command= calcularPrecioEstadia(entryPension.get(), entryPrecio))
 
-lblAcompañantes = Label(ventana, text="Acompañantes:", background="light blue").place(x = 250, y = 70)
-entryAcompañantes = Entry(ventana)
-entryAcompañantes.place(x = 340, y = 70)
+lblFechaLimite = Label(frHabitacion, text = "Fecha Límite:").place(x = 10,y = 25)
+entryFechaLimite = Entry(frHabitacion)
+entryFechaLimite.place(x = 90, y = 25)
 
-lblPrecio =  Label(ventana, text = "Precio:", background="light blue").place(x = 425 , y = 40 )
-entryPrecio = Entry(ventana)
-entryPrecio.insert(0, "1500")
-entryPrecio.place(x = 465,y = 40)
+lblAcompañantes = Label(frHabitacion, text="Acompañantes:").place(x = 240, y = 25)
+entryAcompañantes = Entry(frHabitacion)
+entryAcompañantes.place(x = 330, y = 25)
+
+lblPrecio =  Label(frHabitacion, text = "Precio:").place(x = 415 , y = 0)
+entryPrecio = Entry(frHabitacion)
+entryPrecio.place(x = 455,y = 0)
 entryPrecio.config(state="disabled")
+
+entryPension.bind("<<ComboboxSelected>>", pensionSeleccionada)
 
 # GroupBox Cliente
 lblNombreYApellido = Label(ventana, text = "Nombre y Apellido:", background="light blue").place(x = 20, y = 120 )
@@ -74,7 +85,7 @@ entryPoseeVehiculo = Combobox(ventana, values = ["SI", "NO"],  state = "readonly
 entryPoseeVehiculo.place(x = 135, y = 210)
 # GroupBox Vehiculo
 lblMarca = Label(ventana, text = "Marca:", background="light blue").place(x = 20 ,y = 280)
-entryMarca = Combobox(ventana, values = consultarMarcas(),  state = "readonly")
+entryMarca = Combobox(ventana,  state = "readonly")
 entryMarca.place(x = 80, y = 280)
 entryMarca['value'] = ('Abarth', 'Alfa Romeo', 'Aston Martin', 'Audi', 'Bentley', 'BMW', 'Cadillac', 'Caterham', 'Chevrolet', 'Citroen', 'Dacia', 'Ferrari', 'Fiat', 'Ford', 'Honda', 'Infiniti', 'Isuzu', 'Iveco', 'Jaguar', 'Jeep', 'Kia', 'KTM', 'Lada', 'Lamborghini', 'Lancia', 'Land Rover', 'Lexus', 'Lotus', 'Maserati', 'Mazda', 'Mercedes-Benz', 'Mini', 'Mitsubishi', 'Morgan', 'Nissan', 'Opel', 'Peugeot', 'Piaggio', 'Porsche', 'Renault', 'Rolls-Royce', 'Seat', 'Skoda', 'Smart', 'SsangYong', 'Subaru', 'Suzuki', 'Tata', 'Tesla', 'Toyota', 'Volkswagen', 'Volv')
 
