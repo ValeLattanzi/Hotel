@@ -87,8 +87,12 @@ def calcularPrecioEstadia(pension: str, precio: int = 0):
         precio = 1500
     return precio
 
+def eliminarSaltoLinea(cadena: str):
+    """
+    Elimina el salto de linea para todas las cadenas que se reciben una vez se leen los archivos de texto
+    """
+    return cadena[0 : -1]
 
-# Retorna
 def consultar(lineas: list, opciones: list = [], i: int = 0):
     """
     Funcion generica que recibe las lineas de los archivos de texto
@@ -96,7 +100,7 @@ def consultar(lineas: list, opciones: list = [], i: int = 0):
     """ 
     if len(opciones) > 0 and i == 0:
         opciones.clear()
-    opciones.append(str(lineas[i][0:-1]))
+    opciones = list(map(eliminarSaltoLinea, lineas))
     i += 1
     if not (i == len(lineas)):
         consultar(lineas, opciones, i)
