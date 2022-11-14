@@ -13,7 +13,6 @@ def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañante
     # _precio = ventana.entryPrecio.get()
     # _numeroDocumentoCliente = ventana.entryNumeroDocumento.get()
     # La estadia guarda solo el dni para consultar por ese dato unico
-
     # Verifica que los datos solicitados estén completados
     if not (habitacion == "" or pension == "" or fechaLimite == "" or acompañantes == ""):
         if nombreCliente == "" or nroDocumento == "" or tipoDocumento == "" or mail == "" or pais == "" or poseeVehiculo == "":
@@ -26,7 +25,7 @@ def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañante
     else:
         mensaje("La estadia no contiene datos.\n\rSeleccione los datos requeridos.")
 
-def registrarCliente(nroDocumento, nombreCompleto, tipoDocumento, pais, mail, poseeVehiculo, patente, marca, archivo = open("Cliente.txt", "a", encoding = "utf-8")):        
+def registrarCliente(nroDocumento, nombreCompleto, tipoDocumento, pais, mail, poseeVehiculo, patente, marca, archivo = open("Cliente.txt", "r", encoding = "utf-8")):        
     # Datos Cliente
     # _numeroDocumentoCliente = ventana.entryNumeroDocumento.get()
     # _nombreYApellido = ventana.entryNombreYApellido.get()
@@ -36,14 +35,15 @@ def registrarCliente(nroDocumento, nombreCompleto, tipoDocumento, pais, mail, po
     # _poseeVechiculo = ventana.entryPoseeVehiculo.get()
     # El cliente conoce la patente de su vehiculo
     # _patente = ventana.entryPatente.get()
-    if (poseeVehiculo == "SI" and patente != "" and marca != ""):
-        registrarVehiculo(patente, marca)
-    elif poseeVehiculo == "NO":
-        pass
-    else:
-        mensaje("Los datos del vehiculo no pueden ser nulos.\n\rSeleccione los datos del vehiculo.")
-    registrarDatosEnArchivo(nroDocumento + "," + nombreCompleto + "," + tipoDocumento + "," + pais + "," + mail + "," + poseeVehiculo + "," + patente + "\n", archivo)
-    mensaje("El cliente ha sido registrado con éxito.")
+    if not clienteExistente(nroDocumento):
+        if (poseeVehiculo == "SI" and patente != "" and marca != ""):
+            registrarVehiculo(patente, marca)
+        elif poseeVehiculo == "NO":
+            pass
+        else:
+            mensaje("Los datos del vehiculo no pueden ser nulos.\n\rSeleccione los datos del vehiculo.")
+        registrarDatosEnArchivo(nroDocumento + "," + nombreCompleto + "," + tipoDocumento + "," + pais + "," + mail + "," + poseeVehiculo + "," + patente + "\n", archivo)
+        mensaje("El cliente ha sido registrado con éxito.")
 
 def registrarVehiculo(patente, marca, archivo = open("Vehiculo.txt", "a", encoding = "utf-8")):
     # Datos Vehiculo
@@ -56,18 +56,6 @@ def registrarDatosEnArchivo(datos: str, archivo: str):
     archivo.write(datos)
     archivo.close()
 
-def consultarTipoDocumento(archivo = open("TipoDocumento.txt", "r", encoding = "utf-8")):
-    return para(archivo.readlines())
-
-def consultarMarcas(archivo = open("MarcasVehiculo.txt", "r", encoding = "utf-8")):
-    return para(archivo.readlines())
-
-def consultarHabitaciones(archivo = open("Habitaciones.txt", "r", encoding = "utf-8")):
-    return para(archivo.readlines())
-
-def consultarPensiones(archivo = open("Pension.txt", "r", encoding = "utf-8")):
-    return para(archivo.readlines())
-
 # Funcion recursiva para obtener la lista de cada uno de los archivos de texto
 def para(lista: list, lineasCorregidas : list = [], indice : int = 0):
     # Quita el salto de linea de cada linea
@@ -78,10 +66,26 @@ def para(lista: list, lineasCorregidas : list = [], indice : int = 0):
     indice += 1
     para(lista, lineasCorregidas, indice)
 
-def calcularPrecioEstadia(pension: str, precio: Entry):
+# Ver porque no funciona
+def calcularPrecioEstadia(pension: str):
     if pension == "Desayuno":
-        return precio.insert(0, "850")
+        return "850"
     elif pension == "Media Pension":
-        return precio.insert(0, "1000")
+        return "1000"
     else:
-        return precio.insert(0, "1500")
+        return "1500"
+
+# Funcion que busca el documento del cliente para validar su existencia
+def buscarDocumento(nroDocumento, archivo, lineas: list, indice:int = 0):
+    # Cada indice de lineas es una linea del archivo y se lo splitea guardandolo como vector por comas "," además se lo compara con el numero de documento ingresado por pantalla y si es igual se devuelve True, es decir que ya está registrado.
+    if indice == len(lineas):
+        archivo.close()
+        return False
+    if lineas[indice].count(nroDocumento) == 1:
+        archivo.close()
+        return True
+    indice += 1
+    buscarDocumento(nroDocumento, lineas, indice)
+
+def clienteExistente(nroDocumento: str, archivo = open("Cliente.txt", "r", encoding = "utf-8")):
+    return buscarDocumento(nroDocumento, archivo, archivo.readlines())

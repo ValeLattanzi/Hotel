@@ -36,7 +36,12 @@ entryPension['values'] = ('Desayuno', 'Media Pension', 'Pension Completa')
 entryPension.place(x = 270,y = 0)
 
 def pensionSeleccionada(event):
-    btnInsertarPrecio = Button(frHabitacion, command= calcularPrecioEstadia(entryPension.get(), entryPrecio))
+    entryPrecio.config(state="writeonly")
+    entryPrecio.delete(0, END)
+    entryPrecio.insert(0, "")
+    # Desde donde viene el evento tiene que haber un evento para meter
+    entryPrecio.insert(0, calcularPrecioEstadia(entryPension.get()) )
+    entryPrecio.config(state="readonly")
 
 lblFechaLimite = Label(frHabitacion, text = "Fecha Límite:").place(x = 10,y = 25)
 entryFechaLimite = Entry(frHabitacion)
@@ -49,7 +54,7 @@ entryAcompañantes.place(x = 330, y = 25)
 lblPrecio =  Label(frHabitacion, text = "Precio:").place(x = 415 , y = 0)
 entryPrecio = Entry(frHabitacion)
 entryPrecio.place(x = 455,y = 0)
-entryPrecio.config(state="disabled")
+entryPrecio.config(state="readonly")
 
 entryPension.bind("<<ComboboxSelected>>", pensionSeleccionada)
 # endregion
@@ -67,7 +72,7 @@ entryNombreYApellido.place(x = 135, y = 0)
 lblTipoDocumento = Label(frCliente, text = "Tipo de Documento:").place(x = 15, y = 25)
 entryTipoDocumento = Combobox(frCliente,  state = "readonly")
 entryTipoDocumento.place(x = 135, y = 25)
-entryTipoDocumento['values'] = ('DNI', 'Pasaporte', 'Libreta Civica', 'Libreta Enrolamiento')
+entryTipoDocumento['values'] = ('DNI', 'Pasaporte', 'Libreta Civica', 'Libreta EnrolamientoS')
 
 lblNumeroDocumento = Label(frCliente, text="Nro Documento:").place(x = 280, y = 25)
 entryNumeroDocumento = Entry(frCliente)
@@ -112,6 +117,5 @@ btnRegistrar.place(x = 50, y = 10)
 btnCancelar =  tk.Button(frButtons, text = "CANCELAR", bg="crimson", command = lambda: ventana.destroy())
 btnCancelar.place(x = 450, y = 10)
 # endregion
-# separador = Separator(ventana, orient='horizontal')
 
 ventana.mainloop()

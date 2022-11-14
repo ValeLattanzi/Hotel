@@ -1,0 +1,2 @@
+13/11/2022,104,Media Pension,12/10/2022,2,1000,44899289,PendienteCobro 
+13/11/2022,202,Media Pension,31/12/2022,1,1000,44899289,PendienteCobro 
