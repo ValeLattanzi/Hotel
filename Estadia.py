@@ -1,5 +1,7 @@
 from tkinter import *
+
 from mensajeExito import mensaje
+
 
 # Se reciben por parametros los datos de la estadia
 # Funcion del boton registrar la estadia
@@ -53,30 +55,59 @@ def registrarVehiculo(patente, marca, archivo = open("Vehiculo.txt", "a", encodi
     mensaje("El vehiculo ha sido registrado con éxito.")
 
 def registrarDatosEnArchivo(datos: str, archivo: str):
+    """
+    Registra los datos en el archivo ingresado por parámetro y le añade en una nueva linea al final
+    Los datos que se reciben por parámetro
+    """
     archivo.write(datos)
     archivo.close()
 
-# Funcion recursiva para obtener la lista de cada uno de los archivos de texto
-def para(lista: list, lineasCorregidas : list = [], indice : int = 0):
-    # Quita el salto de linea de cada linea
-    lineasCorregidas.append(str(lista[indice][0:len(lista[indice])-1]))
-    # Al llegar al limite de lineas (cuando el indice es igual a la longitud de la lista), finaliza la funcion
-    if indice == len(lista) - 1:
-        return tuple(lineasCorregidas)
-    indice += 1
-    para(lista, lineasCorregidas, indice)
+# # Funcion recursiva para obtener la lista de cada uno de los archivos de texto
+# def para(lista: list, lineasCorregidas : list = [], i : int = 0):
+#     # Quita el salto de linea de cada linea
+#     lineasCorregidas.append(str(lista[i][0:len(lista[i])-1]))
+#     # Al llegar al limite de lineas (cuando el indice es igual a la longitud de la lista), finaliza la funcion
+#     if i == len(lista) - 1:
+#         return lineasCorregidas
+#     else:
+#         i += 1
+#         para(lista, lineasCorregidas, i)
 
-# Ver porque no funciona
-def calcularPrecioEstadia(pension: str):
+def calcularPrecioEstadia(pension: str, precio: int = 0):
+    """
+    Funcion que calcula el precio de la estadia segun el tipo de pensión seleccionada\n
+    Parametros (\npension -> pension seleccionada en la pantalla\nprecio -> variable local opcional para definir el precio\n)
+    Retorna el valor del precio
+    """
     if pension == "Desayuno":
-        return "850"
+        precio = 850
     elif pension == "Media Pension":
-        return "1000"
+        precio = 1000
     else:
-        return "1500"
+        precio = 1500
+    return precio
 
-# Funcion que busca el documento del cliente para validar su existencia
+
+# Retorna
+def consultar(lineas: list, opciones: list = [], i: int = 0):
+    """
+    Funcion generica que recibe las lineas de los archivos de texto
+    Retorna las opciones que se cargan en los combos de la vista
+    """ 
+    if len(opciones) > 0 and i == 0:
+        opciones.clear()
+    opciones.append(str(lineas[i][0:-1]))
+    i += 1
+    if not (i == len(lineas)):
+        consultar(lineas, opciones, i)
+    return tuple(opciones)
+
 def buscarDocumento(nroDocumento, archivo, lineas: list, indice:int = 0):
+    """
+    Funcion que busca el documento del cliente para validar su existencia\n\r
+    Retorna true en caso de exitir el documento del cliente.\n
+    Parametros(nroDocumento -> numero de documento del cliente, archivo -> archivo que se lee, lineas -> lineas del archivo, indice -> numero para recorrer las lineas)
+    """
     # Cada indice de lineas es una linea del archivo y se lo splitea guardandolo como vector por comas "," además se lo compara con el numero de documento ingresado por pantalla y si es igual se devuelve True, es decir que ya está registrado.
     if indice == len(lineas):
         archivo.close()
@@ -88,4 +119,9 @@ def buscarDocumento(nroDocumento, archivo, lineas: list, indice:int = 0):
     buscarDocumento(nroDocumento, lineas, indice)
 
 def clienteExistente(nroDocumento: str, archivo = open("Cliente.txt", "r", encoding = "utf-8")):
-    return buscarDocumento(nroDocumento, archivo, archivo.readlines())
+    """
+    Llama a la funcion buscarDocumento\n\r
+    Parametros(nroDocumento -> numero de documento del cliente | archivo -> archivo que lee)
+    """
+    # xd = list(filter(lambda linea : linea.split(",")[0] == nroDocumento, archivo.readlines()))
+    return True if len(list(filter(lambda linea : linea.split(",")[0] == nroDocumento, archivo.readlines()))) != 0 else False and archivo.close()

@@ -1,5 +1,6 @@
 # Pantalla para el registro de estadias
 
+# region Imports
 from datetime import datetime
 from tkinter import *
 import tkinter as tk
@@ -7,7 +8,12 @@ import tkinter.ttk as ttk
 from tkinter.ttk import *
 from Estadia import registrarEstadia
 from Estadia import calcularPrecioEstadia
+from Estadia import consultar
+# endregion
+
 # Crea la ventana
+
+# region Ventana
 ventana = Tk()
 ventana.geometry("610x400")
 ventana.title("Estadia")
@@ -22,18 +28,21 @@ entryFechaActual.config(state = "disabled")
 # Genera el grupo de los datos correspondientes a la habitacion
 # region GroupBox Habitacion
 frHabitacion = ttk.Labelframe(ventana, text="Habitacion")
-frHabitacion.config(width=585, height=80)
-frHabitacion.place(x=10, y=28)
+frHabitacion.config(width = 585, height = 80)
+frHabitacion.place(x = 10, y = 28)
 
 lblHabitacion = Label(frHabitacion, text="Habitacion:").place(x = 10,y = 0)
-entryHabitacion = ttk.Combobox(frHabitacion, state='readonly')
+entryHabitacion = ttk.Combobox(frHabitacion)
 entryHabitacion.place(x = 75, y =  0)
-entryHabitacion['values'] = ('101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310')
+entryHabitacion['values'] = consultar(open("Habitaciones.txt", "r").readlines())
+# entryHabitacion['values'] = ('101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '301', '302', '303', '304', '305', '306', '307', '308', '309', '310')
+entryHabitacion.config(state='readonly')
 
 lblPension = Label(frHabitacion, text = "Pension:").place(x = 220 , y = 0)
-entryPension = ttk.Combobox(frHabitacion, state='readonly')
-entryPension['values'] = ('Desayuno', 'Media Pension', 'Pension Completa')
+entryPension = ttk.Combobox(frHabitacion)
+entryPension['values'] = consultar(open("Pension.txt", "r").readlines())
 entryPension.place(x = 270,y = 0)
+entryPension.config(state='readonly')
 
 def pensionSeleccionada(event):
     entryPrecio.config(state="writeonly")
@@ -70,9 +79,10 @@ entryNombreYApellido = Entry(frCliente)
 entryNombreYApellido.place(x = 135, y = 0)
 
 lblTipoDocumento = Label(frCliente, text = "Tipo de Documento:").place(x = 15, y = 25)
-entryTipoDocumento = Combobox(frCliente,  state = "readonly")
+entryTipoDocumento = Combobox(frCliente)
 entryTipoDocumento.place(x = 135, y = 25)
-entryTipoDocumento['values'] = ('DNI', 'Pasaporte', 'Libreta Civica', 'Libreta EnrolamientoS')
+entryTipoDocumento['values'] = consultar(open("TipoDocumento.txt", "r").readlines())
+entryTipoDocumento.config(state = "readonly")
 
 lblNumeroDocumento = Label(frCliente, text="Nro Documento:").place(x = 280, y = 25)
 entryNumeroDocumento = Entry(frCliente)
@@ -97,9 +107,10 @@ frVehiculo.config(width=565, height=60)
 frVehiculo.place(x = 10, y = 110)
 
 lblMarca = Label(frVehiculo, text = "Marca:").place(x = 20 ,y = 10)
-entryMarca = Combobox(frVehiculo,  state = "readonly")
+entryMarca = Combobox(frVehiculo)
 entryMarca.place(x = 80, y = 10)
-entryMarca['value'] = ('Abarth', 'Alfa Romeo', 'Aston Martin', 'Audi', 'Bentley', 'BMW', 'Cadillac', 'Caterham', 'Chevrolet', 'Citroen', 'Dacia', 'Ferrari', 'Fiat', 'Ford', 'Honda', 'Infiniti', 'Isuzu', 'Iveco', 'Jaguar', 'Jeep', 'Kia', 'KTM', 'Lada', 'Lamborghini', 'Lancia', 'Land Rover', 'Lexus', 'Lotus', 'Maserati', 'Mazda', 'Mercedes-Benz', 'Mini', 'Mitsubishi', 'Morgan', 'Nissan', 'Opel', 'Peugeot', 'Piaggio', 'Porsche', 'Renault', 'Rolls-Royce', 'Seat', 'Skoda', 'Smart', 'SsangYong', 'Subaru', 'Suzuki', 'Tata', 'Tesla', 'Toyota', 'Volkswagen', 'Volv')
+entryMarca['value'] = consultar(open("MarcasVehiculo.txt", "r").readlines())
+entryMarca.config(state = "readonly")
 
 lblPatente = Label(frVehiculo, text = "Patente:").place(x = 240, y = 10)
 entryPatente = tk.Entry(frVehiculo)
@@ -119,3 +130,4 @@ btnCancelar.place(x = 450, y = 10)
 # endregion
 
 ventana.mainloop()
+# endregion
