@@ -1,11 +1,12 @@
+import re
 from tkinter import *
 
-from mensajeExito import mensaje
+from mensaje import mensaje
 
 
 # Se reciben por parametros los datos de la estadia
 # Funcion del boton registrar la estadia
-def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañantes, precio, nroDocumento, nombreCliente, tipoDocumento, pais, mail, poseeVehiculo, patente, marca, archivo = open("RegistroEstadia.txt", "a", encoding = "utf-8")):
+def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañantes, precio, nroDocumento, nombreCliente, tipoDocumento, pais, mail, poseeVehiculo, patente, marca, ventana: Tk, archivo = open("RegistroEstadia.txt", "a", encoding = "utf-8")):
     # Datos Estadia
     # _fechaActual = ventana.entryFechaActual.get()
     # _habitacion = ventana.entryHabitacion.get()
@@ -14,20 +15,25 @@ def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañante
     # _acompañantes = ventana.entryAcompañantes.get()
     # _precio = ventana.entryPrecio.get()
     # _numeroDocumentoCliente = ventana.entryNumeroDocumento.get()
+    _regexMail = r""
     # La estadia guarda solo el dni para consultar por ese dato unico
     # Verifica que los datos solicitados estén completados
     if not (habitacion == "" or pension == "" or fechaLimite == "" or acompañantes == ""):
-        if nombreCliente == "" or nroDocumento == "" or tipoDocumento == "" or mail == "" or pais == "" or poseeVehiculo == "":
-            mensaje("El cliente necesita ser seleccionado.\n\rPor favor, ingrese los datos necesarios.")
+        if nombreCliente == "" or nroDocumento == "" or tipoDocumento == "" or pais == "" or poseeVehiculo == "":
+            mensaje("El cliente necesita ser seleccionado.\n\rPor favor, ingrese los datos necesarios.", "ERROR")
         else:
+            if mail != "" and not (re.search(_regexMail, mail)):
+                mensaje("El mail ")
+            else:
             # En caso de tener los campos correctos, los registra
-            registrarCliente(nroDocumento, nombreCliente, tipoDocumento, pais, mail, poseeVehiculo, patente, marca)
-            registrarDatosEnArchivo(fechaActual + "," + habitacion + "," + pension + "," + fechaLimite + "," + acompañantes + "," + precio + "," + nroDocumento + "," + "PendienteCobro \n", archivo)
-            mensaje("La estadia se ha registrado con éxito.")
+                registrarCliente(nroDocumento, nombreCliente, tipoDocumento, pais, mail, poseeVehiculo, patente, marca)
+                registrarDatosEnArchivo(fechaActual + "," + habitacion + "," + pension + "," + fechaLimite + "," + acompañantes + "," + precio + "," + nroDocumento + "," + "PendienteCobro \n", archivo)
+                mensaje("La estadia se ha registrado con éxito.", "Estadia registrada")
     else:
-        mensaje("La estadia no contiene datos.\n\rSeleccione los datos requeridos.")
+        mensaje("La estadia no contiene datos.\n\rSeleccione los datos requeridos.", "ERROR")
+    ventana.destroy()
 
-def registrarCliente(nroDocumento, nombreCompleto, tipoDocumento, pais, mail, poseeVehiculo, patente, marca, archivo = open("Cliente.txt", "r", encoding = "utf-8")):        
+def registrarCliente(nroDocumento, nombreCompleto, tipoDocumento, pais, mail, poseeVehiculo, patente, marca, archivo = open("Cliente.txt", "a", encoding = "utf-8")):        
     # Datos Cliente
     # _numeroDocumentoCliente = ventana.entryNumeroDocumento.get()
     # _nombreYApellido = ventana.entryNombreYApellido.get()
@@ -43,16 +49,16 @@ def registrarCliente(nroDocumento, nombreCompleto, tipoDocumento, pais, mail, po
         elif poseeVehiculo == "NO":
             pass
         else:
-            mensaje("Los datos del vehiculo no pueden ser nulos.\n\rSeleccione los datos del vehiculo.")
+            mensaje("Los datos del vehiculo no pueden ser nulos.\n\rSeleccione los datos del vehiculo.", "ERROR")
         registrarDatosEnArchivo(nroDocumento + "," + nombreCompleto + "," + tipoDocumento + "," + pais + "," + mail + "," + poseeVehiculo + "," + patente + "\n", archivo)
-        mensaje("El cliente ha sido registrado con éxito.")
+        mensaje("El cliente ha sido registrado con éxito.", "Cliente registrado")
 
 def registrarVehiculo(patente, marca, archivo = open("Vehiculo.txt", "a", encoding = "utf-8")):
     # Datos Vehiculo
     # _patente = ventana.entryPatente.get()
     # _marca = ventana.entryMarca.get()
     registrarDatosEnArchivo(patente + "," + marca + "\n", archivo)
-    mensaje("El vehiculo ha sido registrado con éxito.")
+    mensaje("El vehiculo ha sido registrado con éxito.", "Vehiculo registrado")
 
 def registrarDatosEnArchivo(datos: str, archivo: str):
     """

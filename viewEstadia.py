@@ -123,7 +123,7 @@ frButtons = Labelframe(ventana)
 frButtons.config(width=585, height=70)
 frButtons.place(x = 10, y = 320)
 
-btnRegistrar = tk.Button(frButtons, text = "REGISTRAR", bg="light green", command = lambda: registrarEstadia(entryFechaActual.get(), entryHabitacion.get(), entryPension.get(), entryFechaLimite.get(), entryAcompañantes.get(), entryPrecio.get(), entryNumeroDocumento.get(), entryNombreYApellido.get(), entryTipoDocumento.get(), entryPais.get(), entryMail.get(), entryPoseeVehiculo.get(), entryPatente.get(), entryMarca.get()))
+btnRegistrar = tk.Button(frButtons, text = "REGISTRAR", bg="light green", command = lambda: registrarEstadia(entryFechaActual.get(), entryHabitacion.get(), entryPension.get(), entryFechaLimite.get(), entryAcompañantes.get(), entryPrecio.get(), entryNumeroDocumento.get(), entryNombreYApellido.get(), entryTipoDocumento.get(), entryPais.get(), entryMail.get(), entryPoseeVehiculo.get(), entryPatente.get(), entryMarca.get(), ventana))
 btnRegistrar.place(x = 50, y = 10)
 btnCancelar =  tk.Button(frButtons, text = "CANCELAR", bg="crimson", command = lambda: ventana.destroy())
 btnCancelar.place(x = 450, y = 10)
