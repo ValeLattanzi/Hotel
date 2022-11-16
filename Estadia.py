@@ -43,13 +43,13 @@ def registrarCliente(nroDocumento, nombreCompleto, tipoDocumento, pais, mail, po
     # _poseeVechiculo = ventana.entryPoseeVehiculo.get()
     # El cliente conoce la patente de su vehiculo
     # _patente = ventana.entryPatente.get()
+    if (poseeVehiculo == "SI" and patente != "" and marca != ""):
+        registrarVehiculo(patente, marca)
+    elif poseeVehiculo == "NO":
+        pass
+    else:
+        mensaje("Los datos del vehiculo no pueden ser nulos.\n\rSeleccione los datos del vehiculo.", "ERROR")
     if not clienteExistente(nroDocumento):
-        if (poseeVehiculo == "SI" and patente != "" and marca != ""):
-            registrarVehiculo(patente, marca)
-        elif poseeVehiculo == "NO":
-            pass
-        else:
-            mensaje("Los datos del vehiculo no pueden ser nulos.\n\rSeleccione los datos del vehiculo.", "ERROR")
         registrarDatosEnArchivo(nroDocumento + "," + nombreCompleto + "," + tipoDocumento + "," + pais + "," + mail + "," + poseeVehiculo + "," + patente + "\n", archivo)
         mensaje("El cliente ha sido registrado con éxito.", "Cliente registrado")
 
