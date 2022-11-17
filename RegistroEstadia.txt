@@ -1,6 +1,1 @@
-13/11/2022,104,Media Pension,12/10/2022,2,1000,44899289,PendienteCobro 
-13/11/2022,202,Media Pension,31/12/2022,1,1000,44899289,PendienteCobro 
-14/11/2022,104,Media Pension,165016,5,1000,44899289,PendienteCobro 
-15/11/2022,202,Pension Completa,15/12/2022,2,1500,44889288,PendienteCobro 
-15/11/2022,204,Media Pension,15/15/2022,3,1000,44899289,PendienteCobro 
-15/11/2022,204,Desayuno,15/15/2022,3,850,45641234,PendienteCobro 
+16/11/2022,107,Desayuno,18/12/2022,1,850,44899288,PendienteCobro,32

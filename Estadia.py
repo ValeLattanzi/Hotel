@@ -32,11 +32,10 @@ def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañante
                 ):
                 # En caso de no ser correcto
                 mensaje(mensaje = "El mail ingresado no es correcto. Verifique la entrada.", titulo = "ERROR")
-
             else:
             # En caso de tener los campos correctos, los registra
                 registrarCliente(nroDocumento, nombreCliente, tipoDocumento, pais, mail, poseeVehiculo, patente, marca)
-                registrarDatosEnArchivo(fechaActual + "," + habitacion + "," + pension + "," + fechaLimite + "," + acompañantes + "," + precio + "," + nroDocumento + "," + "PendienteCobro,"+ obtenerCantidadDiasReserva(fechaActual, fechaLimite) + "\n", archivo)
+                registrarDatosEnArchivo(fechaActual + "," + habitacion + "," + pension + "," + fechaLimite + "," + acompañantes + "," + precio + "," + nroDocumento +"," + patente + "," + marca + "," + "PendienteCobro,"+ str(obtenerCantidadDiasReserva(fechaActual, fechaLimite)) + "\n", archivo)
                 mensaje("La estadia se ha registrado con éxito.", "Estadia registrada")
     else:
         mensaje("La estadia no contiene datos.\n\rSeleccione los datos requeridos.", "ERROR")
