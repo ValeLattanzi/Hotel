@@ -1,8 +1,8 @@
+from datetime import datetime
 import re
 from tkinter import *
-
+from controllerEstadia import clienteExistente
 from mensaje import mensaje
-
 
 # Se reciben por parametros los datos de la estadia
 # Funcion del boton registrar la estadia
@@ -15,19 +15,28 @@ def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañante
     # _acompañantes = ventana.entryAcompañantes.get()
     # _precio = ventana.entryPrecio.get()
     # _numeroDocumentoCliente = ventana.entryNumeroDocumento.get()
-    _regexMail = r""
+    _regexMail = r"[\S(a-z0-9!)]+[\S(a-z!)]*.+(.com|([^0-9][a-z]*))$"
     # La estadia guarda solo el dni para consultar por ese dato unico
     # Verifica que los datos solicitados estén completados
     if not (habitacion == "" or pension == "" or fechaLimite == "" or acompañantes == ""):
         if nombreCliente == "" or nroDocumento == "" or tipoDocumento == "" or pais == "" or poseeVehiculo == "":
             mensaje("El cliente necesita ser seleccionado.\n\rPor favor, ingrese los datos necesarios.", "ERROR")
         else:
-            if mail != "" and not (re.search(_regexMail, mail)):
-                mensaje("El mail ")
+            if ((mail != "") and 
+            not (
+                # Valida el mail con la expresion regular
+                (re.search(_regexMail, mail)) 
+                and 
+                # Verifica que solo exista un caracter '@'
+                (len(mail.split("@")) == 1))
+                ):
+                # En caso de no ser correcto
+                mensaje(mensaje = "El mail ingresado no es correcto. Verifique la entrada.", titulo = "ERROR")
+
             else:
             # En caso de tener los campos correctos, los registra
                 registrarCliente(nroDocumento, nombreCliente, tipoDocumento, pais, mail, poseeVehiculo, patente, marca)
-                registrarDatosEnArchivo(fechaActual + "," + habitacion + "," + pension + "," + fechaLimite + "," + acompañantes + "," + precio + "," + nroDocumento + "," + "PendienteCobro \n", archivo)
+                registrarDatosEnArchivo(fechaActual + "," + habitacion + "," + pension + "," + fechaLimite + "," + acompañantes + "," + precio + "," + nroDocumento + "," + "PendienteCobro,"+ obtenerCantidadDiasReserva(fechaActual, fechaLimite) + "\n", archivo)
                 mensaje("La estadia se ha registrado con éxito.", "Estadia registrada")
     else:
         mensaje("La estadia no contiene datos.\n\rSeleccione los datos requeridos.", "ERROR")
@@ -68,70 +77,5 @@ def registrarDatosEnArchivo(datos: str, archivo: str):
     archivo.write(datos)
     archivo.close()
 
-# # Funcion recursiva para obtener la lista de cada uno de los archivos de texto
-# def para(lista: list, lineasCorregidas : list = [], i : int = 0):
-#     # Quita el salto de linea de cada linea
-#     lineasCorregidas.append(str(lista[i][0:len(lista[i])-1]))
-#     # Al llegar al limite de lineas (cuando el indice es igual a la longitud de la lista), finaliza la funcion
-#     if i == len(lista) - 1:
-#         return lineasCorregidas
-#     else:
-#         i += 1
-#         para(lista, lineasCorregidas, i)
-
-def calcularPrecioEstadia(pension: str, precio: int = 0):
-    """
-    Funcion que calcula el precio de la estadia segun el tipo de pensión seleccionada\n
-    Parametros (\npension -> pension seleccionada en la pantalla\nprecio -> variable local opcional para definir el precio\n)
-    Retorna el valor del precio
-    """
-    if pension == "Desayuno":
-        precio = 850
-    elif pension == "Media Pension":
-        precio = 1000
-    else:
-        precio = 1500
-    return precio
-
-def eliminarSaltoLinea(cadena: str):
-    """
-    Elimina el salto de linea para todas las cadenas que se reciben una vez se leen los archivos de texto
-    """
-    return cadena[0 : -1]
-
-def consultar(lineas: list, opciones: list = [], i: int = 0):
-    """
-    Funcion generica que recibe las lineas de los archivos de texto
-    Retorna las opciones que se cargan en los combos de la vista
-    """ 
-    if len(opciones) > 0 and i == 0:
-        opciones.clear()
-    opciones = list(map(eliminarSaltoLinea, lineas))
-    i += 1
-    if not (i == len(lineas)):
-        consultar(lineas, opciones, i)
-    return tuple(opciones)
-
-def buscarDocumento(nroDocumento, archivo, lineas: list, indice:int = 0):
-    """
-    Funcion que busca el documento del cliente para validar su existencia\n\r
-    Retorna true en caso de exitir el documento del cliente.\n
-    Parametros(nroDocumento -> numero de documento del cliente, archivo -> archivo que se lee, lineas -> lineas del archivo, indice -> numero para recorrer las lineas)
-    """
-    # Cada indice de lineas es una linea del archivo y se lo splitea guardandolo como vector por comas "," además se lo compara con el numero de documento ingresado por pantalla y si es igual se devuelve True, es decir que ya está registrado.
-    if indice == len(lineas):
-        archivo.close()
-        return False
-    if lineas[indice].count(nroDocumento) == 1:
-        archivo.close()
-        return True
-    indice += 1
-    buscarDocumento(nroDocumento, lineas, indice)
-
-def clienteExistente(nroDocumento: str, archivo = open("Cliente.txt", "r", encoding = "utf-8")):
-    """
-    Llama a la funcion buscarDocumento\n\r
-    Parametros(nroDocumento -> numero de documento del cliente | archivo -> archivo que lee)
-    """
-    # xd = list(filter(lambda linea : linea.split(",")[0] == nroDocumento, archivo.readlines()))
-    return True if len(list(filter(lambda linea : linea.split(",")[0] == nroDocumento, archivo.readlines()))) != 0 else False and archivo.close()
+def obtenerCantidadDiasReserva(fechaDesde: str, fechaHasta: str):
+    return (datetime.strptime(fechaHasta, "%d/%m/%Y") - datetime.strptime(fechaDesde, "%d/%m/%Y")).days
