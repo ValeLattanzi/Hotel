@@ -23,13 +23,9 @@ def registrarEstadia(fechaActual, habitacion, pension, fechaLimite, acompañante
             mensaje("El cliente necesita ser seleccionado.\n\rPor favor, ingrese los datos necesarios.", "ERROR")
         else:
             if ((mail != "") and 
-            not (
                 # Valida el mail con la expresion regular
-                (re.search(_regexMail, mail)) 
-                and 
                 # Verifica que solo exista un caracter '@'
-                (len(mail.split("@")) == 1))
-                ):
+            not ((re.search(_regexMail, mail)) and (len(mail.split("@")) == 2) and (len(mail.split("@")[0]) > 0))):
                 # En caso de no ser correcto
                 mensaje(mensaje = "El mail ingresado no es correcto. Verifique la entrada.", titulo = "ERROR")
             else:

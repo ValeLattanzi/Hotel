@@ -2,3 +2,4 @@
 44889288,Alejo Giustinich,DNI,Arg,,NO,
 45641234,Martin Crosetto,DNI,Arg,,SI,ASD 123
 44899288,Martin Crosetto,DNI,Arg,,NO,
+44889289,Valentino Lattanzi,DNI,Arg,vale.lattanzi15@gmail.com,NO,

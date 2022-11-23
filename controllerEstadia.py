@@ -58,22 +58,6 @@ def consultar(lineas: list, opciones: list = [], i: int = 0):
     opciones = list(map(eliminarSaltoLinea, lineas))
     return tuple(opciones)
 
-def buscarDocumento(nroDocumento, archivo, lineas: list, indice:int = 0):
-    """
-    Funcion que busca el documento del cliente para validar su existencia\n\r
-    Retorna true en caso de exitir el documento del cliente.\n
-    Parametros(nroDocumento -> numero de documento del cliente, archivo -> archivo que se lee, lineas -> lineas del archivo, indice -> numero para recorrer las lineas)
-    """
-    # Cada indice de lineas es una linea del archivo y se lo splitea guardandolo como vector por comas "," además se lo compara con el numero de documento ingresado por pantalla y si es igual se devuelve True, es decir que ya está registrado.
-    if indice == len(lineas):
-        archivo.close()
-        return False
-    if lineas[indice].count(nroDocumento) == 1:
-        archivo.close()
-        return True
-    indice += 1
-    buscarDocumento(nroDocumento, lineas, indice)
-
 def validarPosesionVehiculo(poseeVehiculo: str):
     return True if poseeVehiculo == "SI" else False
 

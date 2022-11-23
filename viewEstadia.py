@@ -13,6 +13,8 @@ from controllerEstadia import validarFechas
 from controllerEstadia import validarPosesionVehiculo
 from controllerEstadia import validarDocumento
 from mensaje import mensaje
+from Funciones import AbrirVentana
+from Funciones import CerrarVentana
 # endregion
 
 # Se guardan las funciones que reciben los eventos de ingreso de datos
@@ -158,9 +160,9 @@ frButtons.place(x = 10, y = 320)
 
 btnRegistrar = tk.Button(frButtons, text = "REGISTRAR", bg="light green", command = lambda: registrarEstadia(entryFechaActual.get(), entryHabitacion.get(), entryPension.get(), entryFechaLimite.get(), entryAcompañantes.get(), entryPrecio.get(), entryNumeroDocumento.get(), entryNombreYApellido.get(), entryTipoDocumento.get(), entryPais.get(), entryMail.get(), entryPoseeVehiculo.get(), entryPatente.get(), entryMarca.get(), ventana))
 btnRegistrar.place(x = 50, y = 10)
-btnCancelar =  tk.Button(frButtons, text = "CANCELAR", bg="crimson", command = lambda: ventana.destroy())
+btnCancelar =  tk.Button(frButtons, text = "CANCELAR", bg="crimson", command = lambda: CerrarVentana(ventana))
 btnCancelar.place(x = 450, y = 10)
 # endregion
 
-ventana.mainloop()
+AbrirVentana(ventana)
 # endregion

@@ -1,1 +1,3 @@
 16/11/2022,107,Desayuno,18/12/2022,1,850,44899288,PendienteCobro,32
+17/11/2022,108,Pension Completa,18/11/2022,2,1500,44889289,,,PendienteCobro,1
+17/11/2022,307,Pension Completa,18/11/2022,1,1500,44899289,,,PendienteCobro,1
