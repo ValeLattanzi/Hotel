@@ -1,6 +1,7 @@
 from tkinter import *
 from Funciones import AbrirVentana
 from Funciones import CerrarVentana
+from PIL import Image, ImageTk
 
 def btnRegistrarEstadia_Click():
     from viewEstadia import ventana
@@ -27,9 +28,12 @@ btnRegistrarCobro = Button(frOpciones, text = "Registrar Cobro", background = "l
 btnRegistrarCobro.place(x = 142, y = 50)
 # endregion
 
-imgLogo = PhotoImage(file = "image.png")
+img = Image.open("imgWhats.png", mode='r')
+resize_image = img.resize(size = (170, 180))
+imgLogo = ImageTk.PhotoImage(resize_image)
 lblImage = Label(ventana, image = imgLogo)
-lblImage.place(x = 40, y = 110)
+lblImage.image = imgLogo
+lblImage.place(x = 110, y = 110)
 
 AbrirVentana(ventana)
 # endregion
