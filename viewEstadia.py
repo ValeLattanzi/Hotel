@@ -20,6 +20,9 @@ from Funciones import CerrarVentana
 # Se guardan las funciones que reciben los eventos de ingreso de datos
 # region Funciones
 def setPension(event):
+    """
+    Funcion que se recibe un nuevo valor de pension
+    """
     entryPrecio.config(state="writeonly")
     entryPrecio.delete(0, END)
     # Desde donde viene el evento tiene que haber un evento para meter
@@ -27,19 +30,31 @@ def setPension(event):
     entryPrecio.config(state="readonly")
 
 def setFechaLimite(event):
+    """
+    Funcion que valida la fecha limite con la fecha actual
+    """
     entryFechaActual.config(state = 'writeonly')
+    # Si no son validas las fechas
     if not (validarFechas(entryFechaActual.get(), entryFechaLimite.get())):
+        # Elimina los datos ingresados
         entryFechaLimite.delete(0, END)
+        # Devuelve el cursor al entry
         entryFechaLimite.focus()
     entryFechaActual.config(state = 'readonly')
 
 def setNumeroDocumento(event):
+    """
+    Funcion que valida el numero de documento ingresado
+    """
     if not (validarDocumento(entryNumeroDocumento.get())):
         mensaje(titulo = "ERROR", mensaje = "El nro de documento está ingresado incorrectamente.")
         entryNumeroDocumento.delete(0, END)
         entryNumeroDocumento.focus()
 
 def setPoseeVehiculo(event):
+    """
+    Funcion que valida el valor seleccionado del combo de posee vehiculo
+    """
     if not (validarPosesionVehiculo(entryPoseeVehiculo.get())):
         entryMarca.config(state = "disabled")
         entryPatente.config(state = "disabled")
@@ -84,6 +99,8 @@ lblFechaLimite = Label(frHabitacion, text = "Fecha Límite:").place(x = 10,y = 2
 entryFechaLimite = Entry(frHabitacion)
 entryFechaLimite.place(x = 90, y = 25)
 # Evento para validar la fecha limite
+# de este entry el bind lo que realiza es cuando salga del entry va a llamar a la función fecha limite
+#  Al salir del entry se (evento) llama a la función especificada.
 entryFechaLimite.bind("<FocusOut>", setFechaLimite)
 
 lblAcompañantes = Label(frHabitacion, text="Acompañantes:").place(x = 240, y = 25)

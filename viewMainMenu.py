@@ -1,8 +1,11 @@
+# region Imports
 from tkinter import *
 from Funciones import AbrirVentana
 from Funciones import CerrarVentana
 from PIL import Image, ImageTk
+# endregion
 
+# region Funciones
 def btnRegistrarEstadia_Click():
     from viewEstadia import ventana
     return AbrirVentana(ventana)
@@ -10,13 +13,14 @@ def btnRegistrarEstadia_Click():
 def btnRegistrarCobro_Click():
     from ventanaCobro import ventana
     return AbrirVentana(ventana)
+# endregion
 
 # region Ventana
 ventana = Tk()
 ventana.title("Hotel - Portal Del Sol")
 ventana.geometry("400x310")
-ventana.maxsize(height = 310, width=400)
-ventana.minsize(height = 310, width=400)
+ventana.maxsize(height = 310, width = 400)
+ventana.minsize(height = 310, width = 400)
 ventana.config(background = "white")
 
 # region frOpciones
@@ -32,7 +36,7 @@ btnRegistrarCobro = Button(frOpciones, text = "Registrar Cobro", background = "l
 btnRegistrarCobro.place(x = 142, y = 40)
 # endregion
 
-img = Image.open("imgWhats.png", mode='r')
+img = Image.open("imgWhats.png", mode = 'r')
 resize_image = img.resize(size = (170, 190))
 imgLogo = ImageTk.PhotoImage(resize_image)
 lblImage = Label(ventana, image = imgLogo)
