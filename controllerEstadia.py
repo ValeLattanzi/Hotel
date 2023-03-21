@@ -40,7 +40,8 @@ def validarFechas(fechaDesde: str, fechaHasta: str):
             int(fechaDesde.split("/")[1]),
             int(fechaDesde.split("/")[0])) 
             <= 
-            datetime.datetime(int(fechaHasta.split("/")[2]), 
+            datetime.datetime(
+            int(fechaHasta.split("/")[2]), 
             int(fechaHasta.split("/")[1]), 
             int(fechaHasta.split("/")[0]))):
             mensaje(mensaje="La fecha limite es menor a la fecha actual. Verifique la entrada de la misma.", titulo="ERROR")
@@ -52,7 +53,7 @@ def consultar(lineas: list, opciones: list = [], i: int = 0):
     """
     Funcion generica que recibe las lineas de los archivos de texto
     Retorna las opciones que se cargan en los combos de la vista
-    """ 
+    """
     if len(opciones) > 0 and i == 0:
         opciones.clear()
     opciones = list(map(eliminarSaltoLinea, lineas))
@@ -81,4 +82,4 @@ def clienteExistente(nroDocumento: str, archivo = open("Cliente.txt", "r", encod
     Verifica la existencia del cliente filtrando por documento
     Parametros(nroDocumento -> numero de documento del cliente | archivo -> archivo que lee)
     """
-    return True if len(list(filter(lambda linea : linea.split(",")[0] == nroDocumento, archivo.readlines()))) != 0 else False and archivo.close()
+    return True if len(list(filter((lambda linea : linea.split(",")[0] == nroDocumento), archivo.readlines()))) != 0 else False and archivo.close()

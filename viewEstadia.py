@@ -21,7 +21,7 @@ from Funciones import CerrarVentana
 # region Funciones
 def setPension(event):
     """
-    Funcion que se recibe un nuevo valor de pension
+    Funcion que se recibe un valor de pension
     """
     entryPrecio.config(state="writeonly")
     entryPrecio.delete(0, END)
@@ -71,6 +71,7 @@ ventana.title("Estadia")
 ventana.maxsize(width = 610,height=400)
 ventana.minsize(width = 610, height = 400)
 ventana.config(background="light grey")
+
 # Genera el entry de la fecha actual la carga
 entryFechaActual = Entry(ventana)
 entryFechaActual.place(x = 20, y = 5)

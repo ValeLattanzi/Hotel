@@ -3,3 +3,6 @@
 45641234,Martin Crosetto,DNI,Arg,,SI,ASD 123
 44899288,Martin Crosetto,DNI,Arg,,NO,
 44889289,Valentino Lattanzi,DNI,Arg,vale.lattanzi15@gmail.com,NO,
+44899256,Lattanzi Valentino,DNI,Arg,,NO,
+44899444,Lattanzi Valentino,DNI,Arg,,NO,
+12345678,Lattanzi Valentino,DNI,Arg,,NO,
